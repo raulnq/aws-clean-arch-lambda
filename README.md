@@ -1,0 +1,1 @@
+# aws-clean-arch-lambda
