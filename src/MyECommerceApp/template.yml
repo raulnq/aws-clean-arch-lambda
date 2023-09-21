@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: This template is partially managed by Amazon.Lambda.Annotations (v1.0.0.0).
+Parameters:
+  DbConnectionStringParam:
+    Type: String
+    Default: Server=my-sqlserver,1433;Database=MyECommerceApp;User ID=sa;Password=Sqlserver123$;MultipleActiveResultSets=true;TrustServerCertificate=True;
+Globals:
+  Function:
+    Environment:
+      Variables:
+        DbConnectionString:
+          Ref: DbConnectionStringParam
+        TopicArn:
+          Ref: SNSTopic
+Resources:
+  SQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: "myecommercequeue"
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: "myecommercetopic"
+  MyECommerceAppClientRequestsHostFunctionRegisterClientRequestGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.ClientRequests.Host.Function_RegisterClientRequest_Generated::RegisterClientRequest
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /client-requests
+            Method: POST
+  MyECommerceAppClientsHostFunctionRegisterClientGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - SQSPollerPolicy:
+            QueueName:
+              Fn::GetAtt: ["SQSQueue", "QueueName"]
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.Clients.Host.Function_RegisterClient_Generated::RegisterClient
+      Events:
+        RootEvent:
+          Type: SNS
+          Properties:
+            Topic:
+              Ref: SNSTopic
+            FilterPolicy:
+              event:
+                - clientrequestapproved
+            SqsSubscription:
+              BatchSize: 10
+              QueueArn:
+                Fn::GetAtt: ["SQSQueue", "Arn"]
+              QueueUrl:
+                Ref: SQSQueue
+  MyECommerceAppClientRequestsHostFunctionListClientRequestsGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootGet
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.ClientRequests.Host.Function_ListClientRequests_Generated::ListClientRequests
+      Events:
+        RootGet:
+          Type: Api
+          Properties:
+            Path: /client-requests
+            Method: GET
+  MyECommerceAppClientRequestsHostFunctionApproveClientRequestGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - SNSPublishMessagePolicy:
+            TopicName:
+              Ref: SNSTopic
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.ClientRequests.Host.Function_ApproveClientRequest_Generated::ApproveClientRequest
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /client-requests/{clientRequestId}/approve
+            Method: POST
