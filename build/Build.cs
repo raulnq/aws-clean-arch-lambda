@@ -23,6 +23,8 @@ class Build : NukeBuild
 
     string MigratorProject = "MyECommerceApp.Migrator";
 
+    string TestProject = "MyECommerceApp.Tests";
+
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
@@ -93,6 +95,16 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNet(PublishDirectory / MigratorProject / $"{MigratorProject}.dll");
+        });
+
+    Target Test => _ => _
+        .Description("Run integration tests")
+        .DependsOn(SamLocalDeploy)
+        .Executes(() =>
+        {
+            DotNetTest(s => s
+                .SetProjectFile(TestDirectory / TestProject)
+                .SetConfiguration(Configuration));
         });
 
 }
