@@ -28,9 +28,6 @@
     <PackageReference Include="SqlKata.Execution" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Orders\" />
-    <Folder Include="Products\" />
     <Folder Include="Shared\Application\" />
-    <Folder Include="ShoppingCart\" />
   </ItemGroup>
 </Project>

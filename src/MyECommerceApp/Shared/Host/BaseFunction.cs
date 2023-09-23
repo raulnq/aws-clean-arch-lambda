@@ -1,9 +1,6 @@
 ﻿using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.SQSEvents;
 using FluentValidation;
-using MyECommerceApp.ClientRequests.Domain;
-using MyECommerceApp.ClientRequests.Infrastructure;
-using MyECommerceApp.Clients.Application;
 using MyECommerceApp.Shared.Domain;
 using MyECommerceApp.Shared.Infrastructure.ExceptionHandling;
 using System.Net;
@@ -61,9 +58,9 @@ public class BaseFunction
             return HttpResults.InternalServerError(new ProblemDetails()
             {
                 Type = "internal-server-error",
-                Detail = ex.Message,
+                Detail = ex.StackTrace,
                 Status = (int)HttpStatusCode.InternalServerError,
-                Title = "Internal Server Error"
+                Title = ex.Message
             });
         }
     }
@@ -116,9 +113,9 @@ public class BaseFunction
             return HttpResults.InternalServerError(new ProblemDetails()
             {
                 Type = "internal-server-error",
-                Detail = ex.Message,
+                Detail = ex.StackTrace,
                 Status = (int)HttpStatusCode.InternalServerError,
-                Title = "Internal Server Error"
+                Title = ex.Message
             });
         }
     }

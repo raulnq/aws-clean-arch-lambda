@@ -29,11 +29,11 @@ namespace MyECommerceApp.Clients.Application
             }
         }
 
-        public class CommandHandler
+        public class Handler
         {
             private readonly IRepository<Client> _clientRepository;
 
-            public CommandHandler(IRepository<Client> clientRepository)
+            public Handler(IRepository<Client> clientRepository)
             {
                 _clientRepository = clientRepository;
             }

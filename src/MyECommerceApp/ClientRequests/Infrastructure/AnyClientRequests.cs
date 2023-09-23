@@ -5,7 +5,7 @@ namespace MyECommerceApp.ClientRequests.Infrastructure
 {
     public class AnyClientRequests
     {
-        public class Query : ListQuery
+        public class Query
         {
             public string Name { get; set; }
         }

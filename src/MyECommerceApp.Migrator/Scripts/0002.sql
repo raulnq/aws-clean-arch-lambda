@@ -9,3 +9,22 @@ CREATE TABLE $schema$.[Clients] (
 );
 
 GO
+
+CREATE TABLE $schema$.[Products] (
+    [ProductId] UNIQUEIDENTIFIER NOT NULL,
+    [Name] nvarchar(250) NOT NULL,
+    [Price] decimal(19,4) NOT NULL,
+    [Description] nvarchar(500) NOT NULL,
+    [IsEnabled] bit NOT NULL,
+    CONSTRAINT [PK_Products] PRIMARY KEY ([ProductId])
+);
+
+GO
+
+CREATE TABLE $schema$.[ShoppingCartItems] (
+    [ShoppingCartItemId] UNIQUEIDENTIFIER NOT NULL,
+    [ProductId] UNIQUEIDENTIFIER NOT NULL,
+    [Quantity] decimal(19,4) NOT NULL,
+    [ClientId] UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT [PK_ShoppingCartItems] PRIMARY KEY ([ShoppingCartItemId])
+);

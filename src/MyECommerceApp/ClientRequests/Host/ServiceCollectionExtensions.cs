@@ -1,8 +1,6 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MyECommerceApp.ClientRequests.Application;
 using MyECommerceApp.ClientRequests.Infrastructure;
-using System;
 
 namespace MyECommerceApp.ClientRequests.Host;
 

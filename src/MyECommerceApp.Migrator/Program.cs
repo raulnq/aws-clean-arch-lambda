@@ -15,8 +15,9 @@ public class Program
             {
                 TimeSpan.FromSeconds(1),
                 TimeSpan.FromSeconds(2),
-                TimeSpan.FromSeconds(5),
-                TimeSpan.FromSeconds(10)
+                TimeSpan.FromSeconds(4),
+                TimeSpan.FromSeconds(8),
+                TimeSpan.FromSeconds(16)
             })
             .Execute(() => migrator.Migrate());
     }

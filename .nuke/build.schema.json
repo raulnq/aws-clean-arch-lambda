@@ -83,7 +83,8 @@
               "SamLocalBuild",
               "SamLocalDeploy",
               "StartEnv",
-              "StopEnv"
+              "StopEnv",
+              "Test"
             ]
           }
         },
@@ -100,7 +101,8 @@
               "SamLocalBuild",
               "SamLocalDeploy",
               "StartEnv",
-              "StopEnv"
+              "StopEnv",
+              "Test"
             ]
           }
         },

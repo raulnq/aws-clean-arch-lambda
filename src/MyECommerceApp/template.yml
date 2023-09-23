@@ -119,3 +119,108 @@ Resources:
           Properties:
             Path: /client-requests/{clientRequestId}/approve
             Method: POST
+  MyECommerceAppClientsHostFunctionGetClientsGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootGet
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.Clients.Host.Function_GetClients_Generated::GetClients
+      Events:
+        RootGet:
+          Type: Api
+          Properties:
+            Path: /clients/{clientId}
+            Method: GET
+  MyECommerceAppProductsHostFunctionRegisterProductGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.Products.Host.Function_RegisterProduct_Generated::RegisterProduct
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: POST
+  MyECommerceAppProductsHostFunctionEnableProductGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.Products.Host.Function_EnableProduct_Generated::EnableProduct
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /products/{productId}/enable
+            Method: POST
+  MyECommerceAppShoppingCartHostFunctionAddProductToShoppingCartGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.ShoppingCart.Host.Function_AddProductToShoppingCart_Generated::AddProductToShoppingCart
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /shopping-cart
+            Method: POST
+  MyECommerceAppOrdersHostFunctionPlaceOrderGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.Orders.Host.Function_PlaceOrder_Generated::PlaceOrder
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: POST

@@ -1,9 +1,11 @@
 using Amazon.Lambda.Annotations;
+using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.SQSEvents;
 using FluentValidation;
 using MyECommerceApp.ClientRequests.Domain;
 using MyECommerceApp.ClientRequests.Infrastructure;
 using MyECommerceApp.Clients.Application;
+using MyECommerceApp.Clients.Infrastructure;
 using MyECommerceApp.Shared.Host;
 using MyECommerceApp.Shared.Infrastructure.EntityFramework;
 
@@ -14,7 +16,7 @@ public class Function : BaseFunction
     [LambdaFunction]
     public Task<SQSBatchResponse> RegisterClient(
         [FromServices] TransactionBehavior behavior, 
-        [FromServices] RegisterClient.CommandHandler handler,
+        [FromServices] RegisterClient.Handler handler,
         [FromServices] GetClientRequest.Runner runner,
         SQSEvent sqsEvent)
     {
@@ -31,6 +33,15 @@ public class Function : BaseFunction
             new RegisterClient.Validator().ValidateAndThrow(command);
             await behavior.Handle(() => handler.Handle(command));
         }, sqsEvent);
+    }
+
+    [LambdaFunction]
+    [RestApi(LambdaHttpMethod.Get, "/clients/{clientId}")]
+    public Task<IHttpResult> GetClients(
+    [FromServices] GetClients.Runner runner,
+    string clientId)
+    {
+        return Handle(() => runner.Run(new GetClients.Query() { ClientId = Guid.Parse(clientId) }));
     }
 }
 
