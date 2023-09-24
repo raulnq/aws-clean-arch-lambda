@@ -9,15 +9,15 @@ Globals:
   Function:
     Environment:
       Variables:
+        POWERTOOLS_SERVICE_NAME: myecommerceapp
+        POWERTOOLS_LOG_LEVEL: Debug
+        POWERTOOLS_LOGGER_LOG_EVENT: false
+        POWERTOOLS_LOGGER_CASE: CamelCase
         DbConnectionString:
           Ref: DbConnectionStringParam
         TopicArn:
           Ref: SNSTopic
 Resources:
-  SQSQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: "myecommercequeue"
   SNSTopic:
     Type: AWS::SNS::Topic
     Properties:
@@ -54,9 +54,6 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
-        - SQSPollerPolicy:
-            QueueName:
-              Fn::GetAtt: ["SQSQueue", "QueueName"]
       PackageType: Zip
       Handler: MyECommerceApp::MyECommerceApp.Clients.Host.Function_RegisterClient_Generated::RegisterClient
       Events:
@@ -68,12 +65,7 @@ Resources:
             FilterPolicy:
               event:
                 - clientrequestapproved
-            SqsSubscription:
-              BatchSize: 10
-              QueueArn:
-                Fn::GetAtt: ["SQSQueue", "Arn"]
-              QueueUrl:
-                Ref: SQSQueue
+            SqsSubscription: true
   MyECommerceAppClientRequestsHostFunctionListClientRequestsGenerated:
     Type: AWS::Serverless::Function
     Metadata:
@@ -216,6 +208,9 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+        - SNSPublishMessagePolicy:
+            TopicName:
+              Ref: SNSTopic
       PackageType: Zip
       Handler: MyECommerceApp::MyECommerceApp.Orders.Host.Function_PlaceOrder_Generated::PlaceOrder
       Events:
@@ -224,3 +219,26 @@ Resources:
           Properties:
             Path: /orders
             Method: POST
+  MyECommerceAppShoppingCartHostFunctionCleanShoppingCartGenerated:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+    Properties:
+      Runtime: dotnet6
+      CodeUri: .
+      MemorySize: 256
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: MyECommerceApp::MyECommerceApp.ShoppingCart.Host.Function_CleanShoppingCart_Generated::CleanShoppingCart
+      Events:
+        RootEvent:
+          Type: SNS
+          Properties:
+            Topic:
+              Ref: SNSTopic
+            FilterPolicy:
+              event:
+                - orderregistered
+            SqsSubscription: true

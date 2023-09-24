@@ -1,5 +1,6 @@
 ﻿using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.SQSEvents;
+using AWS.Lambda.Powertools.Logging;
 using FluentValidation;
 using MyECommerceApp.Shared.Domain;
 using MyECommerceApp.Shared.Infrastructure.ExceptionHandling;
@@ -55,6 +56,8 @@ public class BaseFunction
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Unexpected error {error}", ex.Message);
+
             return HttpResults.InternalServerError(new ProblemDetails()
             {
                 Type = "internal-server-error",
@@ -110,6 +113,8 @@ public class BaseFunction
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Unexpected error {error}", ex.Message);
+
             return HttpResults.InternalServerError(new ProblemDetails()
             {
                 Type = "internal-server-error",

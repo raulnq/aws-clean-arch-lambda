@@ -1,4 +1,3 @@
-using MyECommerceApp.Orders.Domain;
 using MyECommerceApp.Shared.Domain;
 
 namespace MyECommerceApp.ShoppingCart.Domain;

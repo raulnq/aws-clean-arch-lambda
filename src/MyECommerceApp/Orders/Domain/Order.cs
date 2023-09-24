@@ -78,4 +78,6 @@
             Items.Add(new Item(OrderId, productId, name, price, quantity));
         }
     }
+
+    public record OrderRegistered( Guid OrderId, Guid ClientId);
 }

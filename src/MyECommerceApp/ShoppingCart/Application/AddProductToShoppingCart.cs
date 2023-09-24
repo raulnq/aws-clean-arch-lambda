@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using MassTransit;
 using MyECommerceApp.ShoppingCart.Domain;
-using MyECommerceApp.Shared.Domain;
 using System.Text.Json.Serialization;
 
 namespace MyECommerceApp.ShoppingCart.Application

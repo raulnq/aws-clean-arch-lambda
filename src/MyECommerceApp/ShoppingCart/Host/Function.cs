@@ -5,6 +5,9 @@ using MyECommerceApp.ShoppingCart.Application;
 using MyECommerceApp.ShoppingCart.Infrastructure;
 using MyECommerceApp.Shared.Host;
 using MyECommerceApp.Shared.Infrastructure.EntityFramework;
+using Amazon.Lambda.SQSEvents;
+using MyECommerceApp.Orders.Domain;
+using MyECommerceApp.ShoppingCart.Domain;
 
 namespace MyECommerceApp.ShoppingCart.Host;
 
@@ -25,6 +28,18 @@ public class Function : BaseFunction
             var result = await behavior.Handle(() => handler.Handle(command));
             return result;
         });
+    }
+
+    [LambdaFunction]
+    public Task<SQSBatchResponse> CleanShoppingCart(
+    [FromServices] TransactionBehavior behavior,
+    [FromServices] IShoppingCartRepository repository,
+    SQSEvent sqsEvent)
+    {
+        return HandleFromSubscription<OrderRegistered>(async (orderRegistered) =>
+        {
+            await behavior.Handle(() => repository.Delete(orderRegistered.ClientId));
+        }, sqsEvent);
     }
 }
 
