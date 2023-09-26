@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyECommerceApp.ClientRequests.Domain;
-using MyECommerceApp.Shared.Domain;
+using MyECommerceApp.Shared.Infrastructure;
 using MyECommerceApp.Shared.Infrastructure.EntityFramework;
 
 namespace MyECommerceApp.ClientRequests.Infrastructure;

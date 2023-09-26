@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyECommerceApp.ShoppingCart.Application;
 using MyECommerceApp.ShoppingCart.Domain;
-using MyECommerceApp.ShoppingCart.Infrastructure;
 
-namespace MyECommerceApp.ShoppingCart.Host;
+namespace MyECommerceApp.ShoppingCart.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {

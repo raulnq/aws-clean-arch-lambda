@@ -3,56 +3,55 @@ using MassTransit;
 using MyECommerceApp.ShoppingCart.Domain;
 using System.Text.Json.Serialization;
 
-namespace MyECommerceApp.ShoppingCart.Application
+namespace MyECommerceApp.ShoppingCart.Application;
+
+public static class AddProductToShoppingCart
 {
-    public static class AddProductToShoppingCart
+    public class Command
     {
-        public class Command
+        public Guid ClientId { get; set; }
+        public Guid ProductId { get; set; }
+        public decimal Quantity { get; set; }
+        [JsonIgnore]
+        public bool Any { get; set; }
+    }
+
+    public class Result
+    {
+        public Guid ShoppingCartItemId { get; set; }
+    }
+
+    public class Validator : AbstractValidator<Command>
+    {
+        public Validator()
         {
-            public Guid ClientId { get; set; }
-            public Guid ProductId { get; set; }
-            public decimal Quantity { get; set; }
-            [JsonIgnore]
-            public bool Any { get; set; }
+            RuleFor(command => command.Quantity).GreaterThan(0);
+        }
+    }
+
+    public class Handler
+    {
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+
+        public Handler(IShoppingCartRepository shoppingCartRepository)
+        {
+            _shoppingCartRepository = shoppingCartRepository;
         }
 
-        public class Result
+        public Task<Result> Handle(Command command)
         {
-            public Guid ShoppingCartItemId { get; set; }
-        }
+            var product = new ShoppingCartItem(NewId.Next().ToSequentialGuid(), 
+                command.ClientId, 
+                command.ProductId, 
+                command.Quantity,
+                command.Any);
 
-        public class Validator : AbstractValidator<Command>
-        {
-            public Validator()
+            _shoppingCartRepository.Add(product);
+
+            return Task.FromResult(new Result()
             {
-                RuleFor(command => command.Quantity).GreaterThan(0);
-            }
-        }
-
-        public class Handler
-        {
-            private readonly IShoppingCartRepository _shoppingCartRepository;
-
-            public Handler(IShoppingCartRepository shoppingCartRepository)
-            {
-                _shoppingCartRepository = shoppingCartRepository;
-            }
-
-            public Task<Result> Handle(Command command)
-            {
-                var product = new ShoppingCartItem(NewId.Next().ToSequentialGuid(), 
-                    command.ClientId, 
-                    command.ProductId, 
-                    command.Quantity,
-                    command.Any);
-
-                _shoppingCartRepository.Add(product);
-
-                return Task.FromResult(new Result()
-                {
-                    ShoppingCartItemId = product.ShoppingCartItemId
-                });
-            }
+                ShoppingCartItemId = product.ShoppingCartItemId
+            });
         }
     }
 }

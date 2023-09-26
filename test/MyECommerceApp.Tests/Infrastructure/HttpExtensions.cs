@@ -4,7 +4,7 @@ using System.Text.Json;
 using MyECommerceApp.Shared.Infrastructure.ExceptionHandling;
 using System.Web;
 
-namespace MyECommerceApp.Tests;
+namespace MyECommerceApp.Tests.Infrastructure;
 
 public static class HttpExtensions
 {

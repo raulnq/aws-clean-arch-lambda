@@ -1,4 +1,4 @@
-﻿namespace MyECommerceApp.Shared.Domain;
+﻿namespace MyECommerceApp.Shared.Infrastructure;
 
 public static class StringExtensions
 {

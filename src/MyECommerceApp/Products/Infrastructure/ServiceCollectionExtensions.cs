@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyECommerceApp.Products.Application;
-using MyECommerceApp.Products.Infrastructure;
 
-namespace MyECommerceApp.Products.Host;
+namespace MyECommerceApp.Products.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {

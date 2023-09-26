@@ -2,14 +2,14 @@ using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyECommerceApp.ClientRequests.Host;
+using MyECommerceApp.ClientRequests.Infrastructure;
 using MyECommerceApp.Clients.Host;
-using MyECommerceApp.Orders.Host;
-using MyECommerceApp.Products.Host;
+using MyECommerceApp.Orders.Infrastructure;
+using MyECommerceApp.Products.Infrastructure;
 using MyECommerceApp.Shared.Infrastructure.EntityFramework;
 using MyECommerceApp.Shared.Infrastructure.Messaging;
 using MyECommerceApp.Shared.Infrastructure.SqlKata;
-using MyECommerceApp.ShoppingCart.Host;
+using MyECommerceApp.ShoppingCart.Infrastructure;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace MyECommerceApp;
