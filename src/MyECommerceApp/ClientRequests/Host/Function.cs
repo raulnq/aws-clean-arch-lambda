@@ -1,5 +1,7 @@
 using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Annotations.APIGateway;
+using AWS.Lambda.Powertools.Logging;
+using AWS.Lambda.Powertools.Tracing;
 using FluentValidation;
 using MyECommerceApp.ClientRequests.Application;
 using MyECommerceApp.ClientRequests.Domain;
@@ -14,6 +16,8 @@ public class Function : BaseFunction
 {
     [LambdaFunction]
     [RestApi(LambdaHttpMethod.Post, "/client-requests")]
+    [Logging]
+    [Tracing]
     public Task<IHttpResult> RegisterClientRequest(
         [FromServices] AnyClientRequests.Runner runner,
         [FromServices] TransactionBehavior behavior, 
@@ -31,6 +35,8 @@ public class Function : BaseFunction
 
     [LambdaFunction]
     [RestApi(LambdaHttpMethod.Post, "/client-requests/{clientRequestId}/approve")]
+    [Logging]
+    [Tracing]
     public Task<IHttpResult> ApproveClientRequest(
     [FromServices] TransactionBehavior behavior,
     [FromServices] ApproveClientRequest.Handler handler,

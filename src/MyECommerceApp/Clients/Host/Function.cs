@@ -1,6 +1,8 @@
 using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.SQSEvents;
+using AWS.Lambda.Powertools.Logging;
+using AWS.Lambda.Powertools.Tracing;
 using FluentValidation;
 using MyECommerceApp.ClientRequests.Domain;
 using MyECommerceApp.ClientRequests.Infrastructure;
@@ -14,6 +16,8 @@ namespace MyECommerceApp.Clients.Host;
 public class Function : BaseFunction
 {
     [LambdaFunction]
+    [Logging]
+    [Tracing]
     public Task<SQSBatchResponse> RegisterClient(
         [FromServices] TransactionBehavior behavior, 
         [FromServices] RegisterClient.Handler handler,
